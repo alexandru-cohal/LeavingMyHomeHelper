@@ -10,6 +10,9 @@
 
 /********** Global Variables **********/
 MKRIoTCarrier carrier;
+float pressure;
+float humidity;
+float temperature;
 
 /********** Setup Function **********/
 void setup() 
@@ -30,6 +33,9 @@ void setup()
   {
     Serial.println("Carrier initialization OK");
   }
+
+  carrier.display.setTextColor(ST77XX_BLACK);
+  carrier.display.setTextSize(3);
 }
 
 /********** Loop Function **********/
@@ -51,6 +57,27 @@ void loop()
   {
     Serial.println("Button for here pressed");
   }
+
+  pressure = carrier.Pressure.readPressure();
+  Serial.print("Pressure: ");
+  Serial.print(pressure);
+  Serial.println(" kPa");
+
+  humidity = carrier.Env.readHumidity();
+  Serial.print("Humidity: ");
+  Serial.print(humidity);
+  Serial.println(" %");
+
+  temperature = carrier.Env.readTemperature();
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.println(" °C");
+
+  carrier.display.fillScreen(ST77XX_RED);
+  carrier.display.setCursor(10, 100);
+  carrier.display.print("Temperature: ");
+  carrier.display.print(temperature);
+  carrier.display.print(" deg C");
 
   delay(LOOP_PERIOD_MS);
 }
